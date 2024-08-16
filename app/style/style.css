@@ -1,0 +1,43 @@
+body{
+    background-image: url(../images/Museu_da_Inconfidência_1.jpg);
+    background-size: cover;
+    background-position: center -150px;
+    height: 90vh;
+}
+
+form{
+    min-height: 500px;
+    min-width: 45%;
+}
+
+#form{
+    min-width: 30%;
+}
+
+#table{
+    min-width: 60%;
+}
+
+form, #form, #table {
+    background-color: rgb(255, 255, 255, 0.93);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    width: min-content;
+    height: min-content;
+}
+
+form:hover, #form:hover, #table:hover{
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.65);
+}
+
+.t_container{
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.t_container td, .t_container th{
+    text-align: center;
+    vertical-align: middle;
+}
