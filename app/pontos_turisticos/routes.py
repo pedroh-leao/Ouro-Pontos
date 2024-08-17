@@ -3,8 +3,30 @@ from app.pontos_turisticos import bp
 from app.models.ponto_turistico import PontoTuristico
 from app.extensions import db
 
-@bp.route("/ponto_turistico", methods=['POST'])
-def add_ponto_turistico():
+@bp.route("/pontos_turisticos/cadastrar")
+def tela_cadastrar_pontos_turisticos():
+    return render_template('telaCadastroPontos.html')
+
+@bp.route("/pontos_turisticos/listar")
+def tela_listar_pontos_turisticos():
+
+    lista_pontos_turisticos = get_pontos_turisticos()
+    print(lista_pontos_turisticos)
+
+    headers = ['id', 'nome', 'descricao', 'longitude', 'latitude']
+
+    return render_template(
+        'telaListaPontos.html',
+        headers=headers,
+        lista_pontos_turisticos=lista_pontos_turisticos
+    )
+
+
+@bp.route("/pontos_turisticos", methods=['POST'])
+def add_pontos_turisticos():
+    data = request.json
+    print("Data received from the request:", data)
+
     nome = request.json["nome"]
     descricao = request.json["descricao"]
     longitude = request.json["longitude"]
@@ -20,9 +42,11 @@ def add_ponto_turistico():
     db.session.add(novo_ponto_turistico)
     db.session.commit()
 
+    print(novo_ponto_turistico.id)
+
     return {'id': novo_ponto_turistico.id}
 
-@bp.route("/ponto_turistico", methods=['GET'])
+@bp.route("/pontos_turisticos", methods=['GET'])
 def get_pontos_turisticos():
     pontos_turisticos = PontoTuristico.query.all()
     output = [{

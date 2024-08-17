@@ -1,5 +1,5 @@
 body{
-    background-image: url(../images/Museu_da_Inconfidência_1.jpg);
+    background-image: url(/static/images/Museu_da_Inconfidência_1.jpg);
     background-size: cover;
     background-position: center -150px;
     height: 90vh;

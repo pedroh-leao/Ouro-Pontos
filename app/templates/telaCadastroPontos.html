@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../style/style.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/style.css') }}"/>
 
     <title>Ouro Pontos</title>
 </head>
 <body class="d-flex justify-content-center align-items-center">    
 
-    <form action="" class="border mt-5">
+    <form id="pontoTuristicoForm" class="border mt-5">
         <h1 class="text-center mt-5 mb-4">Cadastro de Ponto Turístico</h1>
 
         <div class="form-group mt-5 ml-5 mr-5">                
@@ -34,6 +34,42 @@
             <input type="submit" value="Cadastrar" class="btn btn-primary w-100">
         </div>
     </form>
+
+    <script>
+        document.getElementById('pontoTuristicoForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the default form submission// Get form data
+            
+            let form = document.getElementById("pontoTuristicoForm");
+            let formData = {};
+            for (let i = 0; i < form.elements.length; i++) {
+                let element = form.elements[i];
+                if (element.type !== "submit") {
+                    formData[element.name] = element.value;
+                }
+            }
+
+            console.log(formData)
+
+            // Send data as JSON
+            fetch('{{ url_for("pontos_turisticos.add_pontos_turisticos") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Ponto turístico cadastrado com sucesso! ID: ' + data.id);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert(error);
+            });
+        });
+    </script>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
