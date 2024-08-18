@@ -1,26 +1,11 @@
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from app.pontos_turisticos import bp
-from app.models.ponto_turistico import PontoTuristico
-from app.extensions import db
+from app.extensions import MySQLDatabase
+import mysql.connector
 
 @bp.route("/pontos_turisticos/cadastrar")
 def tela_cadastrar_pontos_turisticos():
     return render_template('telaCadastroPontos.html')
-
-@bp.route("/pontos_turisticos/listar")
-def tela_listar_pontos_turisticos():
-
-    lista_pontos_turisticos = get_pontos_turisticos()
-    print(lista_pontos_turisticos)
-
-    headers = ['id', 'nome', 'descricao', 'longitude', 'latitude']
-
-    return render_template(
-        'telaListaPontos.html',
-        headers=headers,
-        lista_pontos_turisticos=lista_pontos_turisticos
-    )
-
 
 @bp.route("/pontos_turisticos", methods=['POST'])
 def add_pontos_turisticos():
@@ -32,29 +17,46 @@ def add_pontos_turisticos():
     longitude = request.json["longitude"]
     latitude = request.json["latitude"]
 
-    novo_ponto_turistico = PontoTuristico(
-        nome=nome,
-        descricao=descricao,
-        longitude=longitude,
-        latitude=latitude
+    try:
+        conn = MySQLDatabase.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            'INSERT INTO pontos_turisticos (nome, descricao, latitude, longitude) VALUES (%s, %s, %s, %s)', 
+            (nome, descricao, latitude, longitude)
+        )
+        conn.commit()
+
+        cursor.execute('SELECT LAST_INSERT_ID()')
+        last_id = cursor.fetchone()[0]
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            MySQLDatabase.close_connection(conn)
+
+    return {'id': last_id}
+
+@bp.route("/pontos_turisticos/listar")
+def tela_listar_pontos_turisticos():
+
+    lista_pontos_turisticos = get_pontos_turisticos()
+    headers = ['ID', 'Nome', 'Descrição', 'Longitude', 'Latitude']
+
+    return render_template(
+        'telaListaPontos.html',
+        headers=headers,
+        lista_pontos_turisticos=lista_pontos_turisticos
     )
 
-    db.session.add(novo_ponto_turistico)
-    db.session.commit()
-
-    print(novo_ponto_turistico.id)
-
-    return {'id': novo_ponto_turistico.id}
-
 @bp.route("/pontos_turisticos", methods=['GET'])
-def get_pontos_turisticos():
-    pontos_turisticos = PontoTuristico.query.all()
-    output = [{
-        'id': pt.id,
-        'nome': pt.nome,
-        'descricao': pt.descricao,
-        'longitude': pt.longitude,
-        'latitude': pt.latitude,
-    } for pt in pontos_turisticos]
+def get_pontos_turisticos():    
+    conn = MySQLDatabase.get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM pontos_turisticos')
+    results = cursor.fetchall()
+    cursor.close()
+    MySQLDatabase.close_connection(conn)
 
-    return output
+    return results
