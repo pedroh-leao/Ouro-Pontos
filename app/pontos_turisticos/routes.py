@@ -1,7 +1,10 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request
 from app.pontos_turisticos import bp
-from app.extensions import MySQLDatabase
-import mysql.connector
+
+from app.models.ponto_turistico import PontoTuristico
+from app.models.dao_pontos_turisticos import DAO_Pontos_Turisticos
+dao_pontos_turisticos = DAO_Pontos_Turisticos()
+
 
 @bp.route("/pontos_turisticos/cadastrar")
 def tela_cadastrar_pontos_turisticos():
@@ -17,46 +20,32 @@ def add_pontos_turisticos():
     longitude = request.json["longitude"]
     latitude = request.json["latitude"]
 
-    try:
-        conn = MySQLDatabase.get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute(
-            'INSERT INTO pontos_turisticos (nome, descricao, latitude, longitude) VALUES (%s, %s, %s, %s)', 
-            (nome, descricao, latitude, longitude)
-        )
-        conn.commit()
+    target_ponto_turistico = PontoTuristico(
+        nome=nome, 
+        descricao=descricao, 
+        longitude=float(longitude), 
+        latitude=float(latitude)
+    )
 
-        cursor.execute('SELECT LAST_INSERT_ID()')
-        last_id = cursor.fetchone()[0]
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            MySQLDatabase.close_connection(conn)
-
-    return {'id': last_id}
+    return dao_pontos_turisticos.insert_ponto_turistico(target_ponto_turistico)
 
 @bp.route("/pontos_turisticos/listar")
 def tela_listar_pontos_turisticos():
-
     lista_pontos_turisticos = get_pontos_turisticos()
     headers = ['ID', 'Nome', 'Descrição', 'Longitude', 'Latitude']
-
     return render_template(
         'telaListaPontos.html',
         headers=headers,
         lista_pontos_turisticos=lista_pontos_turisticos
     )
 
+@bp.route("/pontos_turisticos/deletar", methods=["DELETE"])
+def deletar_ponto_turistico():
+    id = request.json["id"]
+    target_ponto_turistico = PontoTuristico(id=id)
+    return dao_pontos_turisticos.delete_ponto_turistico(target_ponto_turistico)
+
+
 @bp.route("/pontos_turisticos", methods=['GET'])
 def get_pontos_turisticos():    
-    conn = MySQLDatabase.get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM pontos_turisticos')
-    results = cursor.fetchall()
-    cursor.close()
-    MySQLDatabase.close_connection(conn)
-
-    return results
+    return dao_pontos_turisticos.get_pontos_turisticos()
