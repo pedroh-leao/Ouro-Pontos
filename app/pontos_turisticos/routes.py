@@ -32,7 +32,7 @@ def add_pontos_turisticos():
 @bp.route("/pontos_turisticos/listar")
 def tela_listar_pontos_turisticos():
     lista_pontos_turisticos = get_pontos_turisticos()
-    headers = ['ID', 'Nome', 'Descrição', 'Longitude', 'Latitude']
+    headers = ['ID', 'Nome', 'Descrição', 'Latitude', 'Longitude']
     return render_template(
         'telaListaPontos.html',
         headers=headers,

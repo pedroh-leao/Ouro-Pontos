@@ -23,7 +23,10 @@
                         {% for header in headers %}
                             <th>{{header}}</th>
                         {% endfor %}
+
+                        {% if session['type_user'] == 'admin' %}
                             <th>Remover</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -32,9 +35,11 @@
                             <td>{{row['id']}}</td>
                             <td>{{row['nome']}}</td>
                             <td>{{row['descricao']}}</td>
-                            <td>{{row['longitude']}}</td>
                             <td>{{row['latitude']}}</td>
-                            <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
+                            <td>{{row['longitude']}}</td>
+                            {% if session['type_user'] == 'admin' %}
+                                <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
