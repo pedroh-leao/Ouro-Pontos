@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, session
 from app.pontos_turisticos import bp
 
 from app.models.ponto_turistico import PontoTuristico
@@ -32,7 +32,10 @@ def add_pontos_turisticos():
 @bp.route("/pontos_turisticos/listar")
 def tela_listar_pontos_turisticos():
     lista_pontos_turisticos = get_pontos_turisticos()
-    headers = ['ID', 'Nome', 'Descrição', 'Latitude', 'Longitude']
+    headers = ['ID', 'Nome', 'Descrição']
+    if session['type_user'] == 'admin':
+        headers = headers + ['Latitude', 'Longitude', 'Remover']
+
     return render_template(
         'telaListaPontos.html',
         headers=headers,
