@@ -37,20 +37,34 @@
 
     <script>
         document.getElementById('pontoTuristicoForm').addEventListener('submit', function(event) {
-            event.preventDefault();  // Prevent the default form submission// Get form data
-            
+            event.preventDefault();  // Prevent the default form submission
+    
             let form = document.getElementById("pontoTuristicoForm");
             let formData = {};
+            let isValid = true;
+            let latitude, longitude;
+    
             for (let i = 0; i < form.elements.length; i++) {
                 let element = form.elements[i];
                 if (element.type !== "submit") {
                     formData[element.name] = element.value;
+                    
+                    // Verifica se o campo é latitude ou longitude e se é um número de ponto flutuante
+                    if (element.name === "latitude" || element.name == "longitude") {
+                        latitude = parseFloat(element.value);
+                        if (isNaN(latitude)) {
+                            isValid = false;
+                            alert("A " + element.name + " deve ser um número de ponto flutuante.");
+                        }
+                    }
                 }
             }
-
-            console.log(formData)
-
-            // Send data as JSON
+    
+            if (!isValid) {
+                return; // Impede o envio do formulário se houver um erro
+            }
+    
+            // Envia os dados como JSON
             fetch('{{ url_for("pontos_turisticos.add_pontos_turisticos") }}', {
                 method: 'POST',
                 headers: {
@@ -69,6 +83,7 @@
             });
         });
     </script>
+    
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

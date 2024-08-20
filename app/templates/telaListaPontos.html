@@ -20,21 +20,30 @@
 
                 <thead class="thead-dark">
                     <tr>
-                        {% for header in headers %}
-                            <th>{{header}}</th>
-                        {% endfor %}
+                        {% if session['type_user'] == 'admin' %}
+                            {% for header in headers %}
+                                <th>{{header}}</th>
+                            {% endfor %}
+                        {% else %}
+                            <th>Ponto turistico</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in lista_pontos_turisticos %}
                         <tr>
-                            <td>{{row['id']}}</td>
-                            <td>{{row['nome']}}</td>
-                            <td>{{row['descricao']}}</td>
                             {% if session['type_user'] == 'admin' %}
+                                <td>{{row['id']}}</td>
+                                <td>{{row['nome']}}</td>
+                                <td>{{row['descricao']}}</td>
                                 <td>{{row['latitude']}}</td>
                                 <td>{{row['longitude']}}</td>
                                 <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
+                            {% else %}
+                                <td>
+                                    <h4 style="text-align: left;",>{{row['nome']}}</h4>
+                                    <p style="text-align: justify;">{{row['descricao']}}</p>
+                                </td>
                             {% endif %}
                         </tr>
                     {% endfor %}
