@@ -25,7 +25,9 @@
                                 <th>{{header}}</th>
                             {% endfor %}
                         {% else %}
+                            <th>Check</th>
                             <th>Ponto turistico</th>
+                            <th>Começo</th>
                         {% endif %}
                     </tr>
                 </thead>
@@ -41,14 +43,24 @@
                                 <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
                             {% else %}
                                 <td>
+                                    <input type="checkbox" id="scales" name="scales" />
+                                </td>
+                                <td>
                                     <h4 style="text-align: left;",>{{row['nome']}}</h4>
                                     <p style="text-align: justify;">{{row['descricao']}}</p>
+                                </td>
+                                <td>
+                                    <input type="radio" id="huey" name="drone" value="huey" checked />
                                 </td>
                             {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            {% if session['type_user'] != 'admin' %}
+                <button>Calcular rota</button>
+                <button>Calcular pela minha coordenada</button>
+            {% endif %}
         </div>
     </div>
 
