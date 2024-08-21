@@ -58,7 +58,7 @@
                 </tbody>
             </table>
             {% if session['type_user'] != 'admin' %}
-                <button>Calcular rota</button>
+                <button id="calcularRotaBtn">Calcular rota</button>
                 <button>Calcular pela minha coordenada</button>
             {% endif %}
         </div>
@@ -89,6 +89,12 @@
                 alert(error);
             });
         }
+
+        const calcularRotaBtn = document.getElementById('calcularRotaBtn');
+
+        calcularRotaBtn.addEventListener('click', function(){
+            window.location.href = '/pontos_turisticos/listarMenorCaminho';
+        });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

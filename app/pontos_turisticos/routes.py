@@ -52,3 +52,7 @@ def deletar_ponto_turistico():
 @bp.route("/pontos_turisticos", methods=['GET'])
 def get_pontos_turisticos():    
     return dao_pontos_turisticos.get_pontos_turisticos()
+
+@bp.route("/pontos_turisticos/listarMenorCaminho")
+def tela_lista_menor_caminho():
+    return render_template('telaListaMenorCaminho.html')
