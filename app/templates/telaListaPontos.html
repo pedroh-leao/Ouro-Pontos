@@ -50,7 +50,7 @@
                                     <p style="text-align: justify;">{{row['descricao']}}</p>
                                 </td>
                                 <td>
-                                    <input type="radio" name="drone" value="{{row['id']}}" checked />
+                                    <input type="radio" name="drone" value="{{row['id']}}" />
                                 </td>
                             {% endif %}
                         </tr>
@@ -92,6 +92,7 @@
         }
 
         const calcularRotaBtn = document.getElementById('calcularRotaBtn');
+        const capturarIdsBtn = document.getElementById('capturarIdsBtn');
 
         calcularRotaBtn.addEventListener('click', function(){
             window.location.href = '/pontos_turisticos/listarMenorCaminho';
@@ -113,7 +114,6 @@
                 let radioId = radioButton.value;
                 
                 ids = ids.filter(id => id !== radioId);
-
                 ids.push(radioId);
             }
 
@@ -121,7 +121,18 @@
             console.log(idsJson);
         }
 
+        function alternarCapturarBtn() {
+            const radioButton = document.querySelector('input[type="radio"]:checked');
+            capturarIdsBtn.disabled = !radioButton;
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', alternarCapturarBtn);
+        });
+
+        
         document.getElementById('capturarIdsBtn').addEventListener('click', capturarID);
+        alternarCapturarBtn();
 
     </script>
 
