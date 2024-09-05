@@ -1,20 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMf1la6V6oVPyEYw3UqJzF8c8OMon6CJm5e/Dj" crossorigin="anonymous">
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/style.css') }}"/>
 
     <title>Lista do Menor Caminho</title>
 </head>
-<body>
-    <h1>Testando</h1>
-    <button>botao</button>
+<body class="d-flex justify-content-center align-items-center">
+    
+    <div class="border mt-5" id="table">
+        <h1 class="text-center mt-3 mb-5">Sua Rota</h1>
 
-    <div class="t_container">
-        <h1>testando div</h1>
+        <div class="t_container mr-5 ml-5 mb-3">
+            <table class="table table-striped table-bordered table-hover">
+                <caption>Lista de pontos turísticos fazendo a menor rota para passar por todos</caption>
+
+                <thead class="thead-dark">
+                    <tr>
+                        {% if session['type_user'] == 'admin' %}
+                            {% for header in headers %}
+                                <th>{{header}}</th>
+                            {% endfor %}
+                        {% else %}
+                            <th>Ponto turístico</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in lista_pontos_turisticos %}
+                        <tr>
+                            {% if session['type_user'] == 'admin' %}
+                                <td>{{row['id']}}</td>
+                                <td>{{row['nome']}}</td>
+                                <td>{{row['descricao']}}</td>
+                                <td>{{row['latitude']}}</td>
+                                <td>{{row['longitude']}}</td>
+                                <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
+                            {% else %}
+                                <td>
+                                    <h4 style="text-align: left;">{{row['nome']}}</h4>
+                                    <p style="text-align: justify;">{{row['descricao']}}</p>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+            <a id="whatsappBtn" class="btn btn-success mt-3" href="https://api.whatsapp.com/send?text=Confira%20a%20rota%20dos%20pontos%20tur%C3%ADsticos%20que%20vou%20visitar!" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" width="20" style="vertical-align:middle;"> Compartilhar
+            </a>                     
+
+        </div>
     </div>
+
+    <script>
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMi6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
