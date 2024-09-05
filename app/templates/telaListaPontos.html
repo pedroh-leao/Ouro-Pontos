@@ -50,7 +50,7 @@
                                     <p style="text-align: justify;">{{row['descricao']}}</p>
                                 </td>
                                 <td>
-                                    <input type="radio" id="huey" name="drone" value="huey" checked />
+                                    <input type="radio" name="drone" value="{{row['id']}}" checked />
                                 </td>
                             {% endif %}
                         </tr>
@@ -100,6 +100,7 @@
         function capturarID(){
             let ids = [];
             const checkboxes = document.querySelectorAll('.select-point');
+            const radioButton = document.querySelector('input[type="radio"]:checked');
 
             checkboxes.forEach(checkbox => {
                 if (checkbox.checked) {
@@ -108,11 +109,18 @@
                 }
             });
 
+            if (radioButton) {
+                let radioId = radioButton.value;
+                
+                ids = ids.filter(id => id !== radioId);
+
+                ids.push(radioId);
+            }
+
             let idsJson = JSON.stringify(ids);
             console.log(idsJson);
         }
 
-        
         document.getElementById('capturarIdsBtn').addEventListener('click', capturarID);
 
     </script>
