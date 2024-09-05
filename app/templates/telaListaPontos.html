@@ -43,7 +43,7 @@
                                 <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
                             {% else %}
                                 <td>
-                                    <input type="checkbox" id="scales" name="scales" />
+                                    <input type="checkbox" class="select-point" name="scales" value="{{row['id']}}" />
                                 </td>
                                 <td>
                                     <h4 style="text-align: left;",>{{row['nome']}}</h4>
@@ -58,8 +58,9 @@
                 </tbody>
             </table>
             {% if session['type_user'] != 'admin' %}
-                <button id="calcularRotaBtn">Calcular rota</button>
-                <button>Calcular pela minha coordenada</button>
+                <button id="calcularRotaBtn"class="btn btn-primary mt-3">Calcular rota</button>
+                <button id="calcularPelaCoordenada"class="btn btn-primary mt-3">Calcular pela minha coordenada</button>
+                <button id="capturarIdsBtn"class="btn btn-primary mt-3">Capturar IDs Selecionados</button>
             {% endif %}
         </div>
     </div>
@@ -95,6 +96,25 @@
         calcularRotaBtn.addEventListener('click', function(){
             window.location.href = '/pontos_turisticos/listarMenorCaminho';
         });
+
+        function capturarID(){
+            let ids = [];
+            const checkboxes = document.querySelectorAll('.select-point');
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    let id = checkbox.value;
+                    ids.push(id);
+                }
+            });
+
+            let idsJson = JSON.stringify(ids);
+            console.log(idsJson);
+        }
+
+        
+        document.getElementById('capturarIdsBtn').addEventListener('click', capturarID);
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
