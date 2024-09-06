@@ -8,6 +8,17 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/style.css') }}"/>
     
     <title>Ouro Pontos</title>
+
+    <style>
+        thead.thead-dark th:nth-child(2) {
+            font-size: 1.5rem; 
+            letter-spacing: 0.05em; 
+            text-align: center; 
+            vertical-align: middle; 
+            padding-top: 0.5rem; 
+            padding-bottom: 0.5rem; 
+        }
+    </style>
 </head>
 <body class="d-flex justify-content-center align-items-center">
     
@@ -25,9 +36,9 @@
                                 <th>{{header}}</th>
                             {% endfor %}
                         {% else %}
-                            <th>Check</th>
-                            <th>Ponto turistico</th>
-                            <th>Começo</th>
+                            <th>Pontos de Interesse</th>
+                            <th>Descrição do Ponto Turístico</th>
+                            <th>Ponto Inicial</th>
                         {% endif %}
                     </tr>
                 </thead>
@@ -46,7 +57,7 @@
                                     <input type="checkbox" class="select-point" name="scales" value="{{row['id']}}" />
                                 </td>
                                 <td>
-                                    <h4 style="text-align: left;",>{{row['nome']}}</h4>
+                                    <h4 style="text-align: left;">{{row['nome']}}</h4>
                                     <p style="text-align: justify;">{{row['descricao']}}</p>
                                 </td>
                                 <td>
