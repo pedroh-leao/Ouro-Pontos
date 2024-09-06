@@ -21,6 +21,32 @@ class DAO_Pontos_Turisticos:
 
         return results
     
+    def get_pontos_turisticos_by_id(self, ids) -> list:
+        conn = self.create_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        query = "SELECT * FROM pontos_turisticos WHERE id IN ("
+        for id in ids:
+            query += f"{id},"
+        query = query[:-1] + ");"
+
+        print(query)
+
+        cursor.execute(query)
+        results = cursor.fetchall()
+        
+        cursor.close()
+        self.close_connection(conn)
+        
+        return_value = {
+            row['id']: {
+                "latitude": row['latitude'], 
+                "longitude": row['longitude']
+            } 
+            for row in results
+        }
+        return jsonify(return_value)
+    
     def delete_ponto_turistico(self, target_ponto_turistico: PontoTuristico):
         return_value = None
         query = 'DELETE FROM pontos_turisticos WHERE id=%s'

@@ -13,7 +13,7 @@
     <title>Mapa da Rota</title>
 
 </head>
-<body class="d-flex justify-content-center align-items-center">
+<body class="d-flex justify-content-center align-items-center" onload="carregarPontosDesejados()">
     
     <div class="border mt-5" id="table">
         <h1 class="text-center mt-3 mb-5">Mapa da Rota</h1>
@@ -28,7 +28,17 @@
         </div>
     </div>
 
-    <script></script>
+    <script>
+        var pontosDesejados = []
+        function carregarPontosDesejados(){
+            let pontos_selecionados = JSON.parse(localStorage.pontos_selecionados)
+            for(let i = 0; i < pontos_selecionados.length; i++){
+                let temp = pontos_selecionados[i]
+                pontosDesejados.push([temp.latitude, temp.longitude])
+            }   
+        }
+
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
