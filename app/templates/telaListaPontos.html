@@ -10,24 +10,36 @@
     <title>Ouro Pontos</title>
 
     <style>
-        thead.thead-dark th:nth-child(2) {
-            font-size: 1.5rem; 
+        thead.thead-dark th {
+            font-size: 1rem; 
             letter-spacing: 0.05em; 
             text-align: center; 
             vertical-align: middle; 
-            padding-top: 0.5rem; 
-            padding-bottom: 0.5rem; 
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
-<body class="d-flex justify-content-center align-items-center">
+<body class="d-flex flex-column justify-content-center align-items-center">
     
-    <div class="border mt-5" id="table">
+    <div class="border mt-5 w-100 px-3 px-md-5" id="table">
         <h1 class="text-center mt-3 mb-5">Lista de Pontos Turísticos</h1>
 
-        <div class="t_container mr-5 ml-5 mb-3">
+        <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
-                <caption>Lista de Pontos Turísticos</caption>
+                <caption class="sr-only">Lista de Pontos Turísticos</caption>
 
                 <thead class="thead-dark">
                     <tr>
@@ -68,18 +80,20 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% if session['type_user'] != 'admin' %}
-                <button id="calcularRotaBtn"class="btn btn-primary mt-3">Calcular rota</button>
-                <button id="calcularPelaCoordenada"class="btn btn-primary mt-3">Calcular pela minha coordenada</button>
-                <button id="capturarIdsBtn"class="btn btn-primary mt-3">Capturar IDs Selecionados</button>
-            {% endif %}
         </div>
+
+        {% if session['type_user'] != 'admin' %}
+            <div class="d-flex flex-column flex-md-row justify-content-md-end">
+                <button id="calcularRotaBtn" class="btn btn-primary mt-3 w-100 w-md-auto">Calcular rota</button>
+                <button id="calcularPelaCoordenada" class="btn btn-primary mt-3 w-100 w-md-auto">Calcular pela minha coordenada</button>
+                <button id="capturarIdsBtn" class="btn btn-primary mt-3 w-100 w-md-auto">Capturar IDs Selecionados</button>
+            </div>
+        {% endif %}
     </div>
 
     <script>
         function deletar_ponto(button){
             var row = button.parentNode.parentNode;
-
             var id = row.cells[0].innerText;
 
             fetch('{{ url_for("pontos_turisticos.deletar_ponto_turistico") }}', {
@@ -141,10 +155,8 @@
             radio.addEventListener('change', alternarCapturarBtn);
         });
 
-        
         document.getElementById('capturarIdsBtn').addEventListener('click', capturarID);
         alternarCapturarBtn();
-
     </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
