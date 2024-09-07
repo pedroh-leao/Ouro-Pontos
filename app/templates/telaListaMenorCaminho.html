@@ -13,7 +13,7 @@
     <title>Mapa da Rota</title>
 
 </head>
-<body class="d-flex justify-content-center align-items-center" onload="carregarPontosDesejados()">
+<body class="d-flex justify-content-center align-items-center" onload="carregarMapa()">
     
     <div class="border mt-5" id="table">
         <h1 class="text-center mt-3 mb-5">Mapa da Rota</h1>
@@ -28,6 +28,18 @@
         </div>
     </div>
 
+    <script src="{{url_for('static', filename='scripts/api_info.js')}}"></script>
+
+    <script>
+        function loadGoogleMapsApi() {
+            const script = document.createElement('script');
+            script.src = "https://maps.googleapis.com/maps/api/js?key=" + KEY;
+            document.head.appendChild(script);
+        }
+
+        loadGoogleMapsApi();
+    </script>
+
     <script>
         var pontosDesejados = []
         function carregarPontosDesejados(){
@@ -35,9 +47,56 @@
             for(let i = 0; i < pontos_selecionados.length; i++){
                 let temp = pontos_selecionados[i]
                 pontosDesejados.push([temp.latitude, temp.longitude])
-            }   
+            }
         }
 
+        function initMap(coordinates) {
+            var directionsService = new google.maps.DirectionsService()
+            var directionsRenderer = new google.maps.DirectionsRenderer()
+
+            var map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 8,
+                center: { lat: -20.40211058803492, lng: -43.507638275161774 }, // Localizacao Inicial (Ouro Preto)
+            })
+
+            directionsRenderer.setMap(map);
+
+            var origin = { lat: coordinates[0][0], lng: coordinates[0][1] }
+            var waypoints = []
+
+            const countPoints = coordinates.length
+
+            var newCoordinate
+            for(let i = 1; i < countPoints; i++){
+                newCoordinate = { location: { lat: coordinates[i][0], lng: coordinates[i][1] } }
+                waypoints.push(newCoordinate)
+            }
+
+            var request = {
+                origin: origin, // Ponto de partida
+                destination: origin, // Destino final
+                waypoints: waypoints, // Pontos intermediarios
+                optimizeWaypoints: true, // Otimizando a rota para o menor caminho
+                travelMode: google.maps.TravelMode.WALKING, // Tipo de viagem
+            }
+
+            directionsService.route(request, function (result, status) {
+                if (status == "OK") {
+                    // Removendo o ultimo trecho da rota (do penultimo ponto ao destino), fica melhor visualmente no mapa
+                    if (result.routes[0].legs.length > 1)
+                        result.routes[0].legs.pop()
+
+                    directionsRenderer.setDirections(result) // Renderiza a rota no mapa
+                } else {
+                    console.error("Erro ao buscar a rota: " + status)
+                }
+            })
+        }
+
+        function carregarMapa(){
+            carregarPontosDesejados()
+            initMap(pontosDesejados)
+        }
     </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
