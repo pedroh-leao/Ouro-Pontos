@@ -14,19 +14,19 @@
 
 </head>
 <body class="d-flex justify-content-center align-items-center" onload="carregarMapa()">
-    
-    <div class="border mt-5" id="table">
-        <h1 class="text-center mt-3 mb-5">Mapa da Rota</h1>
+<div class="border mt-5" id="table">
+    <h1 class="text-center mt-3 mb-5">Mapa da Rota</h1>
 
-        <div class="t_container mr-5 ml-5 mb-3">
-            <div id="map" class="map-container"></div>
+    <div class="t_container mr-5 ml-5 mb-3">
+        <div id="map" class="map-container"></div>
+<!--
+    <a id="whatsappBtn" class="btn btn-success mt-3" href="https://api.whatsapp.com/send?text=Confira%20a%20rota%20dos%20pontos%20tur%C3%ADsticos%20que%20vou%20visitar!" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" width="20" style="vertical-align:middle;"> Compartilhar
+    </a>
+-->
 
-            <a id="whatsappBtn" class="btn btn-success mt-3" href="https://api.whatsapp.com/send?text=Confira%20a%20rota%20dos%20pontos%20tur%C3%ADsticos%20que%20vou%20visitar!" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" width="20" style="vertical-align:middle;"> Compartilhar
-            </a>                     
-
-        </div>
     </div>
+</div>
 
     <script src="{{url_for('static', filename='scripts/api_info.js')}}"></script>
 
