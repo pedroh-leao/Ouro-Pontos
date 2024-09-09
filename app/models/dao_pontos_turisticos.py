@@ -14,7 +14,7 @@ class DAO_Pontos_Turisticos:
     def get_pontos_turisticos(self) -> list:
         conn = self.create_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute('SELECT * FROM pontos_turisticos')
+        cursor.execute('SELECT * FROM pontos_turisticos ORDER BY pontos_turisticos.nome ASC')
         results = cursor.fetchall()
         cursor.close()
         self.close_connection(conn)
