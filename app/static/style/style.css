@@ -71,3 +71,9 @@ thead.thead-dark th:nth-child(2) {
     justify-content: center;
     align-items: center;
 }
+
+.large-checkbox, .large-radio {
+    width: 25px;
+    height: 25px;
+    transform: scale(0.9); /* Ajusta o tamanho visual do checkbox */
+}

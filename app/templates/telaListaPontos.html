@@ -9,6 +9,9 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style/style.css') }}" />
 
+    <style>
+    </style>
+
     <title>Ouro Pontos</title>
 
 </head>
@@ -47,14 +50,14 @@
                         <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
                         {% else %}
                         <td>
-                            <input type="checkbox" class="select-point" name="scales" value="{{row['id']}}" />
+                            <input type="checkbox" class="select-point large-checkbox" name="scales" value="{{row['id']}}" />
                         </td>
                         <td>
                             <h4 style="text-align: left;">{{row['nome']}}</h4>
                             <p style="text-align: justify;">{{row['descricao']}}</p>
                         </td>
                         <td>
-                            <input type="radio" name="drone" value="{{row['id']}}" />
+                            <input type="radio" class="large-radio" name="drone" value="{{row['id']}}" />
                         </td>
                         {% endif %}
                     </tr>
