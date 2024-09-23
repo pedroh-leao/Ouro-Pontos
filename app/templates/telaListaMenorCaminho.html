@@ -87,6 +87,31 @@
                         result.routes[0].legs.pop()
 
                     directionsRenderer.setDirections(result) // Renderiza a rota no mapa
+                    
+                    // String para armazenar os nomes dos locais
+                    let localNames = ""
+
+                    cont = 0
+                    // Iterar pelos diferentes trechos (legs) da rota
+                    result.routes[0].legs.forEach((leg) => {
+                        if (leg.start_address) {
+                            cont++
+                            localNames += "\n" + cont + ". " + leg.start_address // Adiciona o endereço inicial do trecho
+                        }
+                    })
+
+                    // Adiciona o endereco final do ultimo trecho
+                    if (result.routes[0].legs.length > 0) {
+                        const lastLeg = result.routes[0].legs[result.routes[0].legs.length - 1]
+                        cont++
+                        localNames += "\n" + cont + ". " + lastLeg.end_address
+                    }
+
+                    console.log("Locais da rota: ", localNames)
+
+                    // Atualiza o botão de compartilhar com a rota
+                    let whatsappBtn = document.getElementById("whatsappBtn")
+                    whatsappBtn.href = "https://api.whatsapp.com/send?text=Confira%20a%20rota%20dos%20pontos%20tur%C3%ADsticos%20que%20vou%20visitar!%20" + encodeURIComponent(localNames)
                 } else {
                     console.error("Erro ao buscar a rota: " + status)
                 }
