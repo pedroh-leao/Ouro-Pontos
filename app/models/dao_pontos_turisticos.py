@@ -21,7 +21,17 @@ class DAO_Pontos_Turisticos:
 
         return results
     
-    def get_pontos_turisticos_by_id(self, ids) -> list:
+    def get_ponto_turistico_by_id(self, id):
+        conn = self.create_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM pontos_turisticos WHERE id = %s"
+        cursor.execute(query, (id, ))
+        result = cursor.fetchone()
+        cursor.close()
+        self.close_connection(conn)
+        return result
+
+    def get_many_pontos_turisticos_by_ids(self, ids) -> list:
         conn = self.create_connection()
         cursor = conn.cursor(dictionary=True)
 
@@ -93,6 +103,27 @@ class DAO_Pontos_Turisticos:
             cursor.close()
         if conn:
             self.close_connection(conn)
+
+        return return_value
+        
+    def update_ponto_turistico(self, target_ponto_turistico: PontoTuristico):
+        return_value = None
+        query = "UPDATE pontos_turisticos SET nome=%s, descricao=%s, latitude=%s, longitude=%s WHERE id=%s"
+        try:
+            conn = self.create_connection()
+            cursor = conn.cursor()
+            cursor.execute(query, (
+                target_ponto_turistico.nome,
+                target_ponto_turistico.descricao,
+                target_ponto_turistico.latitude,
+                target_ponto_turistico.longitude,
+                target_ponto_turistico.id
+            ))
+            conn.commit()
+        except mysql.connector.Error as err:
+            return_value = jsonify({'message': err}), 400
+        else:
+            return_value = jsonify({'message': f'{target_ponto_turistico.nome} atualizado'}), 200
 
         return return_value
         

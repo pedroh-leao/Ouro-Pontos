@@ -27,38 +27,30 @@
 
                 <thead class="thead-dark">
                     <tr>
-                        <th>Pontos de Interesse</th>
-                        <th>Descrição do Ponto Turístico</th>
-                        <th>Ponto Inicial</th>
+                        {% for header in headers %}
+                            <th>{{header}}</th>
+                        {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in lista_pontos_turisticos %}
                         <tr>
-                            <td>
-                                <input type="checkbox" class="select-point large-checkbox" name="scales" value="{{row['id']}}" />
-                            </td>
-                            <td>
-                                <h4 style="text-align: left;">{{row['nome']}}</h4>
-                                <p style="text-align: justify;">{{row['descricao']}}</p>
-                            </td>
-                            <td>
-                                <input type="radio" class="large-radio" name="drone" value="{{row['id']}}" />
-                            </td>
+                            <td>{{row['id']}}</td>
+                            <td>{{row['nome']}}</td>
+                            <td>{{row['descricao']}}</td>
+                            <td>{{row['latitude']}}</td>
+                            <td>{{row['longitude']}}</td>
+                            <td><button class="btn btn-warning" onclick="editar_ponto(this)">Editar</button></td>
+                            <td><button class="btn btn-danger" onclick="deletar_ponto(this)">Remover</button></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-
-        <div class="mr-5 ml-5 mb-3">
-            <button id="calcularRotaBtn" class="btn btn-primary mt-3">Calcular rota</button>
-            <button id="calcularPelaCoordenada" class="btn btn-primary mt-3">Usar minha localização de partida</button>
-        </div>
     </div>
 
+    <script src="{{url_for('static', filename='scripts/lista_pontos_adm.js')}}"></script>
 
-    <script src="{{url_for('static', filename='scripts/lista_pontos.js')}}"></script>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

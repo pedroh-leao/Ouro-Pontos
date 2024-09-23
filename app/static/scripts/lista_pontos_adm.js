@@ -1,7 +1,11 @@
-function deletar_ponto(button) {
-    var row = button.parentNode.parentNode;
+function obter_id(button){
+    let row = button.parentNode.parentNode;
+    let id = row.cells[0].innerText;
+    return id;
+}
 
-    var id = row.cells[0].innerText;
+function deletar_ponto(button) {
+    let id = obter_id(button);
 
     fetch('/pontos_turisticos/deletar', {
         method: 'DELETE',
@@ -21,4 +25,9 @@ function deletar_ponto(button) {
             console.error('Error:', error);
             alert(error);
         });
+}
+
+function editar_ponto(button){
+    let id = obter_id(button);
+    window.location.href = "pontos_turisticos/tela_editar?id="+id;
 }

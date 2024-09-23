@@ -12,27 +12,30 @@
 <body class="d-flex justify-content-center align-items-center">    
 
     <form id="pontoTuristicoForm" class="border mt-5">
-        <h1 class="text-center mt-5 mb-4">Cadastro de Ponto Turístico</h1>
+        <h1 class="text-center mt-5 mb-4">Edição de Ponto Turístico</h1>
 
         <div class="form-group mt-5 ml-5 mr-5">                
-            <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome" required>
+            <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome" value ="{{ponto_turistico['nome']}}" required>
         </div>
 
         <div class="form-group mt-4 ml-5 mr-5">            
-            <textarea class="form-control" name="descricao" id="descricao" rows="10" placeholder="Descrição Do Ponto Turístico" required></textarea>
+            <textarea class="form-control" name="descricao" id="descricao" placeholder="Descrição Do Ponto Turístico" rows="10" required>{{ponto_turistico['descricao']}}</textarea>
         </div>
 
         <div class="form-group mt-4 ml-5 mr-5">            
-            <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Latitude" required>
+            <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Latitude" value ="{{ponto_turistico['latitude']}}" required>
         </div>
 
         <div class="form-group mt-4 ml-5 mr-5">            
-            <input type="text" class="form-control" name="longitude" id="longitude" placeholder="Longitude" required>
+            <input type="text" class="form-control" name="longitude" id="longitude" placeholder="Longitude" value ="{{ponto_turistico['longitude']}}" required>
         </div>
         
         <div class="form-group mt-4 mr-5 ml-5 mb-4">
-            <input type="submit" value="Cadastrar" class="btn btn-primary w-100">
+            <input type="submit" value="Editar" class="btn btn-primary w-100">
         </div>
+
+        <input type="hidden" name="id" id="id" value="{{ponto_turistico['id']}}">
+
     </form>
 
     <script src="{{url_for('static', filename='scripts/cadastro.js')}}"></script>
@@ -44,18 +47,18 @@
             let form = document.getElementById("pontoTuristicoForm");
                         
             const [isValid, formData] = verificar_latitude_e_longitude(form.elements);
+            
     
             if (!isValid) {
                 return; // Impede o envio do formulário se houver um erro
             }
-    
-
-            enviarDados('{{ url_for("pontos_turisticos.add_pontos_turisticos") }}', formData).then(response => {
+            
+            enviarDados('{{ url_for("pontos_turisticos.update_ponto_turistico") }}', formData).then(response => {
                 if(response){
-                    document.getElementById("pontoTuristicoForm").reset();
+                    history.back();
                 }
             })
-
+        
         });
     </script>
     
